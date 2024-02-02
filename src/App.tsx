@@ -6,6 +6,7 @@ import TaskList from './components/TaskList';
 import TaskModal from './components/TaskModal';
 import AssignmentLateIcon from '@mui/icons-material/AssignmentLate';
 import TaskAltIcon from '@mui/icons-material/TaskAlt';
+import { TaskProvider } from './Provider/TaskContext';
 
 interface Task {
   id: number;
@@ -71,41 +72,43 @@ function App(): JSX.Element {
     }
   };
 
-  
+
   return (
-    <Container sx={{ display: 'flex', py: 5, alignItems: 'center', flexDirection: 'column', justifyContent: 'center' }} maxWidth="sm">
-      
-      <Typography sx={{ py: 4, fontFamily: 'Segoe UI', fontSize: '42px', fontWeight: '700', color: "#f88198" }}>Todo List App</Typography>
-      
-      <Box p={4} sx={{ width: '100%', backgroundColor: '#fff', borderRadius: 3, boxShadow: '3px 3px 40px -1px rgba(70,82,157,0.23)' }}>
+    <TaskProvider>
+      <Container sx={{ display: 'flex', py: 5, alignItems: 'center', flexDirection: 'column', justifyContent: 'center' }} maxWidth="sm">
         
-        {/* ---- Section ajouter une nouvelle tâche ---- */}
-        <TaskForm addTask={addTask} />
-
-        {/* ---- Affichage du nombre de tâches non terminées ---- */}
-        <Box sx={{ my: 2, borderRadius: 1 }}>
-
-          <Typography sx={{ color: '#e5bc5d', py: .5, display: 'flex', alignItems: 'center', gap: 1 }}>
-            <AssignmentLateIcon sx={{ fontSize: '19px' }} />
-            {tasks.filter(task => !task.completed).length} tâche(s) non terminée(s)
-          </Typography>
+        <Typography sx={{ py: 4, fontFamily: 'Segoe UI', fontSize: '42px', fontWeight: '700', color: "#f88198" }}>Todo List App</Typography>
+        
+        <Box p={4} sx={{ width: '100%', backgroundColor: '#fff', borderRadius: 3, boxShadow: '3px 3px 40px -1px rgba(70,82,157,0.23)' }}>
           
-          {tasks.filter(task => task.completed).length > 0 && (
-            <Typography sx={{ color: '#61c2cd', py: .5, display: 'flex', alignItems: 'center', gap: 1 }}>
-              <TaskAltIcon sx={{ fontSize: '19px' }} />
-              {tasks.filter(task => task.completed).length} tâche(s) terminée(s)
-            </Typography>
-          )}
-        </Box>
+          {/* ---- Section ajouter une nouvelle tâche ---- */}
+          <TaskForm addTask={addTask} />
 
-        {/* ---- Liste des tâches ---- */}
-        <Typography sx={{ py: 2, fontWeight: '700' }}>Liste des tâches :</Typography>
-        <TaskList tasks={tasks} toggleComplete={toggleComplete} openEditModal={openEditModal} deleteTask={deleteTask} />
-        
-        {/* ---- Modal d'édition d'une tâche ---- */}
-        <TaskModal open={openModal} onClose={() => setOpenModal(false)} editTask={editTask} saveEditedTask={saveEditedTask} setEditTask={setEditTask} />
-      </Box>
-    </Container>
+          {/* ---- Affichage du nombre de tâches non terminées ---- */}
+          <Box sx={{ my: 2, borderRadius: 1 }}>
+
+            <Typography sx={{ color: '#e5bc5d', py: .5, display: 'flex', alignItems: 'center', gap: 1 }}>
+              <AssignmentLateIcon sx={{ fontSize: '19px' }} />
+              {tasks.filter(task => !task.completed).length} tâche(s) non terminée(s)
+            </Typography>
+            
+            {tasks.filter(task => task.completed).length > 0 && (
+              <Typography sx={{ color: '#61c2cd', py: .5, display: 'flex', alignItems: 'center', gap: 1 }}>
+                <TaskAltIcon sx={{ fontSize: '19px' }} />
+                {tasks.filter(task => task.completed).length} tâche(s) terminée(s)
+              </Typography>
+            )}
+          </Box>
+
+          {/* ---- Liste des tâches ---- */}
+          <Typography sx={{ py: 2, fontWeight: '700' }}>Liste des tâches :</Typography>
+          <TaskList tasks={tasks} toggleComplete={toggleComplete} openEditModal={openEditModal} deleteTask={deleteTask} />
+          
+          {/* ---- Modal d'édition d'une tâche ---- */}
+          <TaskModal open={openModal} onClose={() => setOpenModal(false)} editTask={editTask} saveEditedTask={saveEditedTask} setEditTask={setEditTask} />
+        </Box>
+      </Container>
+    </TaskProvider>
   );
 }
 
